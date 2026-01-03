@@ -1,0 +1,34 @@
+{
+  "name": "ci-pointage",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@nuxtjs/google-fonts": "^3.2.0",
+    "@nuxtjs/robots": "^5.6.7",
+    "@nuxtjs/sitemap": "^7.5.0",
+    "@pinia/nuxt": "^0.11.3",
+    "@tabler/icons-vue": "^3.35.0",
+    "@vueuse/core": "^14.1.0",
+    "@vueuse/nuxt": "^14.1.0",
+    "nuxt": "^3.20.1",
+    "nuxt-gtag": "^4.1.0",
+    "pinia": "^3.0.4",
+    "vue": "^3.5.25",
+    "vue-router": "^4.6.3"
+  },
+  "devDependencies": {
+    "@nuxtjs/color-mode": "^4.0.0",
+    "@nuxtjs/tailwindcss": "^6.14.0",
+    "@tailwindcss/line-clamp": "^0.4.4",
+    "@types/node": "^25.0.3",
+    "typescript": "^5.9.3",
+    "vue-tsc": "^3.2.1"
+  }
+}
