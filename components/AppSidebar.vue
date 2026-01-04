@@ -16,8 +16,7 @@
     <div class="flex flex-col h-full overflow-hidden">
       <!-- Navigation -->
       <nav class="flex-1 p-3 space-y-1 overflow-y-auto overflow-x-hidden">
-        <NuxtLink v-for="item in menuItems" :key="item.to" :to="item.to"
-          @click="closeSidebar"
+        <NuxtLink v-for="item in menuItems" :key="item.to" :to="item.to" @click="closeSidebar"
           class="flex items-center gap-3 px-3 py-3 rounded-lg transition-all group whitespace-nowrap relative" :class="[
             isActive(item.to)
               ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
@@ -38,7 +37,9 @@
         <div
           class="card p-3 bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-primary-900/10 dark:to-secondary-900/10 border-none">
           <p class="text-xs font-bold text-[var(--color-text-primary)]">Besoin d'aide ?</p>
-          <a href="#" class="text-xs text-primary-600 hover:underline mt-1 block">Support technique</a>
+          <a href="mailto:contact@cyberincub.bj" class="text-xs text-primary-600 hover:underline mt-1 block">
+            Support technique
+          </a>
         </div>
       </div>
       <div v-else class="p-4 border-t flex justify-center">
@@ -83,135 +84,135 @@ const isCollapsed = ref(false);
 
 const allMenuItems: MenuItem[] = [
   // Incubé
-  { 
-    label: 'Tableau de bord', 
-    to: '/incube/dashboard', 
-    icon: IconLayoutDashboard, 
-    roles: [ROLES.Incube_Role] 
+  {
+    label: 'Tableau de bord',
+    to: '/incube/dashboard',
+    icon: IconLayoutDashboard,
+    roles: [ROLES.Incube_Role]
   },
-  { 
-    label: 'Marquer présence', 
-    to: '/incube/presence', 
-    icon: IconClipboardCheck, 
-    roles: [ROLES.Incube_Role] 
+  {
+    label: 'Marquer présence',
+    to: '/incube/presence',
+    icon: IconClipboardCheck,
+    roles: [ROLES.Incube_Role]
   },
-  { 
-    label: 'Historique', 
-    to: '/incube/history', 
-    icon: IconHistory, 
-    roles: [ROLES.Incube_Role] 
+  {
+    label: 'Historique',
+    to: '/incube/history',
+    icon: IconHistory,
+    roles: [ROLES.Incube_Role]
   },
-  { 
-    label: 'Rétro-présence', 
-    to: '/incube/retro', 
-    icon: IconCalendarTime, 
-    roles: [ROLES.Incube_Role] 
+  {
+    label: 'Rétro-présence',
+    to: '/incube/retro',
+    icon: IconCalendarTime,
+    roles: [ROLES.Incube_Role]
   },
-  { 
-    label: 'Permissions', 
-    to: '/incube/permissions', 
-    icon: IconInfoCircle, 
-    roles: [ROLES.Incube_Role] 
+  {
+    label: 'Permissions',
+    to: '/incube/permissions',
+    icon: IconInfoCircle,
+    roles: [ROLES.Incube_Role]
   },
-  { 
-    label: 'Avertissements', 
-    to: '/incube/warnings', 
-    icon: IconAlertTriangle, 
-    roles: [ROLES.Incube_Role] 
+  {
+    label: 'Avertissements',
+    to: '/incube/warnings',
+    icon: IconAlertTriangle,
+    roles: [ROLES.Incube_Role]
   },
 
   // Formateur
-  { 
-    label: 'Tableau de bord', 
-    to: '/formateur/dashboard', 
-    icon: IconLayoutDashboard, 
-    roles: [ROLES.PForm_Role] 
+  {
+    label: 'Tableau de bord',
+    to: '/formateur/dashboard',
+    icon: IconLayoutDashboard,
+    roles: [ROLES.PForm_Role]
   },
-  { 
-    label: 'Gestion formateurs', 
-    to: '/manage/formateurs', 
-    icon: IconSchool, 
-    roles: [ROLES.PForm_Role] 
+  {
+    label: 'Gestion formateurs',
+    to: '/manage/formateurs',
+    icon: IconSchool,
+    roles: [ROLES.PForm_Role]
   },
-  { 
-    label: 'Gestion des incubés', 
-    to: '/manage/incubes', 
-    icon: IconUser, 
-    roles: ROLE_GROUPS.GForms_Role 
+  {
+    label: 'Gestion des incubés',
+    to: '/manage/incubes',
+    icon: IconUser,
+    roles: ROLE_GROUPS.GForms_Role
   },
-  { 
-    label: 'Présences', 
-    to: '/formateur/presences', 
-    icon: IconClipboardCheck, 
-    roles: ROLE_GROUPS.GForms_Role 
+  {
+    label: 'Présences',
+    to: '/formateur/presences',
+    icon: IconClipboardCheck,
+    roles: ROLE_GROUPS.GForms_Role
   },
-  { 
-    label: 'Permissions', 
-    to: '/formateur/permissions', 
-    icon: IconInfoCircle, 
-    roles: ROLE_GROUPS.GForms_Role 
+  {
+    label: 'Permissions',
+    to: '/formateur/permissions',
+    icon: IconInfoCircle,
+    roles: ROLE_GROUPS.GForms_Role
   },
-  { 
-    label: 'Avertissements', 
-    to: '/manage/warnings', 
-    icon: IconAlertTriangle, 
-    roles: ROLE_GROUPS.GForms_Role 
+  {
+    label: 'Avertissements',
+    to: '/manage/warnings',
+    icon: IconAlertTriangle,
+    roles: ROLE_GROUPS.GForms_Role
   },
-  { 
-    label: 'Entités', 
-    to: '/manage/entities', 
-    icon: IconStack2, 
-    roles: ROLE_GROUPS.GForms_Role 
+  {
+    label: 'Entités',
+    to: '/manage/entities',
+    icon: IconStack2,
+    roles: ROLE_GROUPS.GForms_Role
   },
 
   // Admin
-  { 
-    label: 'Tableau de bord', 
-    to: '/admin/dashboard', 
-    icon: IconLayoutDashboard, 
-    roles: ROLE_GROUPS.GAdmin_Role 
+  {
+    label: 'Tableau de bord',
+    to: '/admin/dashboard',
+    icon: IconLayoutDashboard,
+    roles: ROLE_GROUPS.GAdmin_Role
   },
-  { 
-    label: 'Administrateurs', 
-    to: '/admin/admins', 
-    icon: IconUsers, 
-    roles: ROLE_GROUPS.GAdmin_Role 
+  {
+    label: 'Administrateurs',
+    to: '/admin/admins',
+    icon: IconUsers,
+    roles: ROLE_GROUPS.GAdmin_Role
   },
-  { 
-    label: 'Formateurs', 
-    to: '/manage/formateurs', 
-    icon: IconSchool, 
-    roles: ROLE_GROUPS.GAdmin_Role 
+  {
+    label: 'Formateurs',
+    to: '/manage/formateurs',
+    icon: IconSchool,
+    roles: ROLE_GROUPS.GAdmin_Role
   },
-  { 
-    label: 'Incubés', 
-    to: '/manage/incubes', 
-    icon: IconUser, 
-    roles: ROLE_GROUPS.GAdmin_Role 
+  {
+    label: 'Incubés',
+    to: '/manage/incubes',
+    icon: IconUser,
+    roles: ROLE_GROUPS.GAdmin_Role
   },
-  { 
-    label: 'Présences', 
-    to: '/admin/presences', 
-    icon: IconClipboardCheck, 
-    roles: ROLE_GROUPS.GAdmin_Role 
+  {
+    label: 'Présences',
+    to: '/admin/presences',
+    icon: IconClipboardCheck,
+    roles: ROLE_GROUPS.GAdmin_Role
   },
-  { 
-    label: 'Paiements', 
-    to: '/admin/paiements', 
-    icon: IconCash, 
-    roles: ROLE_GROUPS.GAdmin_Role 
+  {
+    label: 'Paiements',
+    to: '/admin/paiements',
+    icon: IconCash,
+    roles: ROLE_GROUPS.GAdmin_Role
   },
-   { 
-    label: 'Avertissements', 
-    to: '/manage/warnings', 
-    icon: IconAlertTriangle, 
-    roles: ROLE_GROUPS.GAdmin_Role 
+  {
+    label: 'Avertissements',
+    to: '/manage/warnings',
+    icon: IconAlertTriangle,
+    roles: ROLE_GROUPS.GAdmin_Role
   },
-  { 
-    label: 'Entités', 
-    to: '/manage/entities', 
-    icon: IconStack2, 
-    roles: ROLE_GROUPS.GAdmin_Role 
+  {
+    label: 'Entités',
+    to: '/manage/entities',
+    icon: IconStack2,
+    roles: ROLE_GROUPS.GAdmin_Role
   },
 ];
 

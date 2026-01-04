@@ -100,7 +100,36 @@ export const useAuthStore = defineStore('auth', () => {
 
     } catch (error: any) {
       console.error('Login error:', error);
-      return { success: false, message: error.data?.message || 'Email ou mot de passe incorrect' };
+
+      let message = 'Une erreur est survenue lors de la connexion.';
+
+      // Message renvoyé par le backend
+      if (error.data?.message) {
+        message = error.data.message;
+      }
+      // Erreur réseau ou serveur inaccessible
+      else if (!error.response && (
+        error.name === 'FetchError' ||
+        error.message?.toLowerCase().includes('network error') ||
+        error.message?.toLowerCase().includes('failed to fetch') ||
+        error.message?.toLowerCase().includes('load failed')
+      )) {
+        message = 'Impossible de contacter le serveur. Vérifiez votre connexion internet.';
+      }
+      // Erreur serveur (500)
+      else if (error.statusCode >= 500) {
+        message = 'Une erreur interne est survenue. Veuillez réessayer plus tard.';
+      }
+      // 404 non trouvé
+      else if (error.statusCode === 404) {
+        message = 'Service de connexion indisponible.';
+      }
+      // Fallback pour 401 si pas de message
+      else if (error.statusCode === 401) {
+        message = 'Email ou mot de passe incorrect.';
+      }
+
+      return { success: false, message };
     }
   };
 
@@ -152,7 +181,49 @@ export const useAuthStore = defineStore('auth', () => {
 
       return { success: true, message: 'Inscription réussie' };
     } catch (error: any) {
-      return { success: false, message: error.data?.message || 'Erreur lors de l\'inscription' };
+      console.error('Register error:', error);
+
+      let message = 'Erreur lors de l\'inscription.';
+
+      if (error.data) {
+        if (error.data?.message) {
+          message = error.data.message;
+        } else if (typeof error.data === 'string') {
+          if (error.data === 'emailAlreadyInUse' || error.data.includes('emailAlreadyInUse')) {
+            message = 'L\'adresse email est déjà utilisée.';
+          } else if (
+            error.data === 'invalidPhoneFormat' ||
+            error.data.includes('invalidPhoneFormat') ||
+            error.data.toLowerCase().includes('le format du numéro de téléphone') ||
+            error.data.toLowerCase().includes('phone')
+          ) {
+            message = 'Le format du numéro de téléphone est invalide (requis: +22901XXXXXXXX)';
+          } else if (error.data === 'passwordFormatInvalid' || error.data.includes('passwordFormatInvalid') || error.data.includes('mot de passe')) {
+            // If it's a specific message (e.g. from helper), use it. otherwise generic.
+            message = error.data.includes('mot de passe') ? error.data : 'Le format du mot de passe est invalide.';
+          } else if (error.data === 'Bad Request') {
+            message = 'Données invalides. Vérifiez votre saisie.';
+          } else {
+            message = error.data;
+          }
+        }
+      } else if (!error.response && (
+        error.name === 'FetchError' ||
+        error.message?.toLowerCase().includes('network error') ||
+        error.message?.toLowerCase().includes('failed to fetch') ||
+        error.message?.toLowerCase().includes('load failed')
+      )) {
+        message = 'Impossible de contacter le serveur. Vérifiez votre connexion internet.';
+      } else if (error.statusCode === 409) {
+        message = 'L\'adresse email est déjà utilisée.';
+      } else if (error.statusCode === 400) {
+        // Si on a un fallback générique
+        if (message === 'Erreur lors de l\'inscription.') {
+          message = 'Format des données invalide. Vérifiez le numéro de téléphone (+229...).';
+        }
+      }
+
+      return { success: false, message };
     }
   };
 
@@ -281,7 +352,31 @@ export const useAuthStore = defineStore('auth', () => {
       });
       return { success: true, message: 'Mot de passe mis à jour' };
     } catch (error: any) {
-      return { success: false, message: error.data?.message || 'Erreur lors de la mise à jour du mot de passe' };
+      let message = 'Erreur lors de la mise à jour du mot de passe';
+
+      if (error.data) {
+        if (error.data?.message) {
+          message = error.data.message;
+        } else if (typeof error.data === 'string') {
+          if (error.data === 'badCombo' || error.data.includes('badCombo')) {
+            message = 'Mot de passe actuel incorrect.';
+          } else if (error.data === 'passwordFormatInvalid' || error.data.includes('passwordFormatInvalid') || error.data.includes('mot de passe')) {
+            message = error.data.includes('mot de passe') ? error.data : 'Le nouveau mot de passe est invalide (8 caractères, 1 Maj, 1 min, 1 chiffre, 1 spécial).';
+          } else if (error.statusCode === 401 || error.data?.statusCode === 401) {
+            message = 'Mot de passe actuel incorrect.';
+          } else {
+            message = error.data;
+          }
+        } else if (error.data.badCombo) {
+          message = error.data.badCombo;
+        } else if (error.data.passwordFormatInvalid) {
+          message = error.data.passwordFormatInvalid;
+        }
+      } else if (error.statusCode === 401) {
+        message = 'Mot de passe actuel incorrect.';
+      }
+
+      return { success: false, message };
     }
   };
 
@@ -370,7 +465,23 @@ export const useAuthStore = defineStore('auth', () => {
       });
       return { success: true, message: 'Mot de passe réinitialisé avec succès' };
     } catch (error: any) {
-      return { success: false, message: error.data?.message || 'Lien invalide ou expiré' };
+      let message = 'Lien invalide ou expiré';
+
+      if (error.data) {
+        if (error.data?.message) {
+          message = error.data.message;
+        } else if (typeof error.data === 'string') {
+          if (error.data === 'invalidToken') {
+            message = 'Le lien de réinitialisation est invalide ou a expiré.';
+          } else if (error.data === 'passwordFormatInvalid' || error.data.includes('mot de passe')) {
+            message = error.data.includes('mot de passe') ? error.data : 'Le mot de passe ne respecte pas les critères de sécurité.';
+          } else {
+            message = error.data;
+          }
+        }
+      }
+
+      return { success: false, message };
     }
   };
 

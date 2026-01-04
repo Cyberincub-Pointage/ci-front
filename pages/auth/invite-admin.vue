@@ -27,7 +27,8 @@
         </div>
 
         <div class="mb-8">
-          <h1 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white mb-2">Acceptez votre invitation Admin
+          <h1 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white mb-2">Acceptez votre invitation
+            Admin
           </h1>
           <p class="text-slate-500 dark:text-slate-400">
             Finalisez la configuration de votre compte administrateur en définissant votre mot de passe.
@@ -40,12 +41,14 @@
             <div>
               <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Prénom</label>
               <input v-model="prenom" type="text"
-                class="w-full px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white" disabled />
+                class="w-full px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white"
+                disabled />
             </div>
             <div>
               <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Nom</label>
               <input v-model="nom" type="text"
-                class="w-full px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white" disabled />
+                class="w-full px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-white"
+                disabled />
             </div>
           </div>
 
@@ -101,9 +104,9 @@ const api = useAPI();
 useHead({
   title: 'Invitation admin',
   meta: [
-    { 
-      name: 'description', 
-      content: "Acceptez votre invitation pour rejoindre l'équipe d'administration de CyberIncub. Définissez votre mot de passe pour accéder au tableau de bord." 
+    {
+      name: 'description',
+      content: "Acceptez votre invitation pour rejoindre l'équipe d'administration de CyberIncub. Définissez votre mot de passe pour accéder au tableau de bord."
     }
   ]
 });
@@ -133,21 +136,30 @@ const handleSubmit = async () => {
         password: form.value.password,
         nom: nom.value,
         prenom: prenom.value,
-        // Admin controllers might expect photoUrl but it's optional
       }
     });
 
     if (response.token) {
       const authCookie = useCookie('auth_token');
       authCookie.value = response.token;
-      
-      // Force refresh user/profile if needed, or just let dashboard load fail if not ready (usually auto-fetched)
-      
+
       useToast().success('Compte Admin activé avec succès !');
       window.location.href = '/admin/dashboard';
     }
   } catch (error: any) {
-    useToast().error(error.data?.message || "Une erreur est survenue lors de l'activation.");
+    let message = "Une erreur est survenue lors de l'activation.";
+    if (error.data) {
+      if (typeof error.data === 'string') {
+        message = error.data;
+      } else if (error.data.message) {
+        message = error.data.message;
+      } else if (error.data.passwordFormatInvalid) {
+        message = error.data.passwordFormatInvalid;
+      } else if (error.data.invalidToken) {
+        message = error.data.invalidToken;
+      }
+    }
+    useToast().error(message);
   } finally {
     loading.value = false;
   }

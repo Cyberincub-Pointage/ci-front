@@ -103,9 +103,9 @@ const api = useAPI();
 useHead({
   title: 'Invitation formateur',
   meta: [
-    { 
-      name: 'description', 
-      content: "Acceptez votre invitation pour rejoindre l'équipe pédagogique de CyberIncub. Définissez votre mot de passe et commencez." 
+    {
+      name: 'description',
+      content: "Acceptez votre invitation pour rejoindre l'équipe pédagogique de CyberIncub. Définissez votre mot de passe et commencez."
     }
   ]
 });
@@ -150,7 +150,19 @@ const handleSubmit = async () => {
       window.location.href = '/formateur/dashboard';
     }
   } catch (error: any) {
-    useToast().error(error.data?.message || "Une erreur est survenue lors de l'activation.");
+    let message = "Une erreur est survenue lors de l'activation.";
+    if (error.data) {
+      if (typeof error.data === 'string') {
+        message = error.data;
+      } else if (error.data.message) {
+        message = error.data.message;
+      } else if (error.data.passwordFormatInvalid) {
+        message = error.data.passwordFormatInvalid;
+      } else if (error.data.invalidToken) {
+        message = error.data.invalidToken;
+      }
+    }
+    useToast().error(message);
   } finally {
     loading.value = false;
   }
