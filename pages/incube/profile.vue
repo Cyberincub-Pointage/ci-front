@@ -28,8 +28,7 @@
           <div class="relative z-10 transition-all duration-300">
             <div
               class="w-28 h-28 mx-auto rounded-full bg-gradient-to-br from-amber-400 to-orange-500 p-1 mb-4 shadow-xl relative group">
-              <div v-if="user?.photoUrl"
-                class="w-full h-full rounded-full bg-white dark:bg-gray-800 overflow-hidden">
+              <div v-if="user?.photoUrl" class="w-full h-full rounded-full bg-white dark:bg-gray-800 overflow-hidden">
                 <img :src="user.photoUrl" class="w-full h-full object-cover" alt="Profile" />
               </div>
               <div v-else
@@ -39,19 +38,19 @@
                   {{ userInitials }}
                 </span>
               </div>
-              
+
               <!-- Bouton photo -->
-              <button @click="openPhotoModal" 
+              <button @click="openPhotoModal"
                 class="absolute bottom-0 right-0 p-2 bg-white dark:bg-gray-800 rounded-full shadow-lg border border-gray-100 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0"
                 title="Modifier la photo">
-                 <IconCamera class="w-4 h-4" />
+                <IconCamera class="w-4 h-4" />
               </button>
 
               <!-- Bouton suppression photo -->
-              <button v-if="user?.photoUrl" @click="deletePhoto" 
+              <button v-if="user?.photoUrl" @click="deletePhoto"
                 class="absolute bottom-0 left-0 p-2 bg-white dark:bg-gray-800 rounded-full shadow-lg border border-gray-100 dark:border-gray-700 text-red-500 hover:text-red-700 transition-all opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0"
                 title="Supprimer la photo">
-                 <IconTrash class="w-4 h-4" />
+                <IconTrash class="w-4 h-4" />
               </button>
             </div>
 
@@ -82,8 +81,7 @@
         </div>
 
         <!-- Carte Projet -->
-        <div
-          class="card p-5 relative overflow-hidden">
+        <div class="card p-5 relative overflow-hidden">
           <div class="absolute right-0 top-0 p-3 opacity-5">
             <IconBriefcase class="w-24 h-24" />
           </div>
@@ -107,51 +105,56 @@
 
         <!-- Configuration Équipe -->
         <div class="card overflow-hidden">
-           <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-[var(--color-bg-secondary)]">
-              <h3 class="font-bold flex items-center gap-2 text-gray-800 dark:text-white">
-                 <IconUsers class="w-5 h-5 text-blue-500" />
-                 Mon Équipe
-              </h3>
-              <button @click="openTeamModal"
-                class="btn btn-sm btn-ghost hover:bg-white dark:hover:bg-gray-700 text-blue-600 shadow-none hover:shadow-sm transition-all"
-                :title="teamRequestPending ? 'Demande en cours' : 'Modifier / Rejoindre'">
-                <IconEdit v-if="!teamRequestPending" class="w-4 h-4 mr-1.5" />
-                <IconClock v-else class="w-4 h-4 mr-1.5" />
-                {{ teamRequestPending ? 'En attente' : (equipe ? 'Modifier' : 'Rejoindre') }}
-              </button>
-           </div>
-           
-           <div class="p-6">
-              <div v-if="equipe">
-                 <div class="flex items-center gap-4 p-4 rounded-xl border border-gray-100 dark:border-gray-700">
-                    <div class="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-lg">
-                       {{ equipe.nom.substring(0,2).toUpperCase() }}
-                    </div>
-                    <div>
-                       <h4 class="font-bold text-gray-900 dark:text-white">{{ equipe.nom }}</h4>
-                       <p class="text-sm text-[var(--color-text-secondary)]">Membre de l'équipe</p>
-                    </div>
-                 </div>
+          <div
+            class="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-[var(--color-bg-secondary)]">
+            <h3 class="font-bold flex items-center gap-2 text-gray-800 dark:text-white">
+              <IconUsers class="w-5 h-5 text-blue-500" />
+              Mon Équipe
+            </h3>
+            <button @click="openTeamModal"
+              class="btn btn-sm btn-ghost hover:bg-white dark:hover:bg-gray-700 text-blue-600 shadow-none hover:shadow-sm transition-all"
+              :title="teamRequestPending ? 'Demande en cours' : 'Modifier / Rejoindre'">
+              <IconEdit v-if="!teamRequestPending" class="w-4 h-4 mr-1.5" />
+              <IconClock v-else class="w-4 h-4 mr-1.5" />
+              {{ teamRequestPending ? 'En attente' : (equipe ? 'Modifier' : 'Rejoindre') }}
+            </button>
+          </div>
 
-                 <div v-if="teamRequestPending" class="mt-4 p-3 bg-yellow-50 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300 rounded-lg text-sm flex items-center gap-2">
-                    <IconClock class="w-5 h-5" />
-                    <span>Votre demande de changement d'équipe est en cours de validation.</span>
-                 </div>
+          <div class="p-6">
+            <div v-if="equipe">
+              <div class="flex items-center gap-4 p-4 rounded-xl border border-gray-100 dark:border-gray-700">
+                <div
+                  class="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-lg">
+                  {{ equipe.nom.substring(0, 2).toUpperCase() }}
+                </div>
+                <div>
+                  <h4 class="font-bold text-gray-900 dark:text-white">{{ equipe.nom }}</h4>
+                  <p class="text-sm text-[var(--color-text-secondary)]">Membre de l'équipe</p>
+                </div>
               </div>
-              
-              <div v-else class="text-center py-6">
-                 <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-50 dark:bg-gray-800/50 mb-3">
-                    <IconUsers class="w-6 h-6 text-gray-400" />
-                 </div>
-                 <p class="text-gray-500 text-sm">Vous ne faites partie d'aucune équipe pour le moment.</p>
-                 <button @click="openTeamModal" class="btn btn-sm btn-primary mt-3">Rejoindre une équipe</button>
-                 
-                 <div v-if="teamRequestPending" class="mt-4 p-3 bg-yellow-50 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300 rounded-lg text-sm flex items-center gap-2 text-left">
-                    <IconClock class="w-5 h-5 shrink-0" />
-                    <span>Demande de changement d'équipe en attente de validation.</span>
-                 </div>
+
+              <div v-if="teamRequestPending"
+                class="mt-4 p-3 bg-yellow-50 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300 rounded-lg text-sm flex items-center gap-2">
+                <IconClock class="w-5 h-5" />
+                <span>Votre demande de changement d'équipe est en cours de validation.</span>
               </div>
-           </div>
+            </div>
+
+            <div v-else class="text-center py-6">
+              <div
+                class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-50 dark:bg-gray-800/50 mb-3">
+                <IconUsers class="w-6 h-6 text-gray-400" />
+              </div>
+              <p class="text-gray-500 text-sm">Vous ne faites partie d'aucune équipe pour le moment.</p>
+              <button @click="openTeamModal" class="btn btn-sm btn-primary mt-3">Rejoindre une équipe</button>
+
+              <div v-if="teamRequestPending"
+                class="mt-4 p-3 bg-yellow-50 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300 rounded-lg text-sm flex items-center gap-2 text-left">
+                <IconClock class="w-5 h-5 shrink-0" />
+                <span>Demande de changement d'équipe en attente de validation.</span>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Sécurité -->
@@ -331,9 +334,8 @@
         { name: 'telephone', label: 'Téléphone', type: 'tel', placeholder: '+229...', fullWidth: true }
       ]" />
 
-    <AppModal v-model="showPhotoModal" title="Modifier ma photo" is-form @confirm="savePhoto"
-      :loading="isSubmitting" submit-label="Enregistrer" submit-variant="primary"
-      :form="photoForm" :fields="[
+    <AppModal v-model="showPhotoModal" title="Modifier ma photo" is-form @confirm="savePhoto" :loading="isSubmitting"
+      submit-label="Enregistrer" submit-variant="primary" :form="photoForm" :fields="[
         { name: 'photoUrl', label: 'URL de la photo', type: 'url', required: false, placeholder: 'https://...', fullWidth: true, icon: IconCamera }
       ]" />
 
@@ -351,19 +353,19 @@
     </AppModal>
 
     <!-- Modal Équipe -->
-    <AppModal v-model="showTeamModal" :title="equipe ? 'Changer d\'équipe' : 'Rejoindre une équipe'" is-form @confirm="saveTeam"
-       :loading="teamLoading" submit-label="Enregistrer" submit-variant="primary"
-       :description="equipe ? 'Votre changement d\'équipe devra être validé par un formateur.' : 'Sélectionnez votre équipe parmi la liste.'"
-       description-type="info" :form="teamForm" :fields="[
-          { name: 'equipeId', label: 'Équipe', type: 'select', required: true, options: teamStore.teams.map(e => ({ value: e.id, label: e.nom })), placeholder: 'Sélectionnez une équipe' }
-       ]" />
+    <AppModal v-model="showTeamModal" :title="equipe ? 'Changer d\'équipe' : 'Rejoindre une équipe'" is-form
+      @confirm="saveTeam" :loading="teamLoading" submit-label="Enregistrer" submit-variant="primary"
+      :description="equipe ? 'Votre changement d\'équipe devra être validé par un formateur.' : 'Sélectionnez votre équipe parmi la liste.'"
+      description-type="info" :form="teamForm" :fields="[
+        { name: 'equipeId', label: 'Équipe', type: 'select', required: true, options: teamStore.teams.map(e => ({ value: e.id, label: e.nom })), placeholder: 'Sélectionnez une équipe' }
+      ]" />
 
     <!-- Modal Mot de passe -->
     <AppModal v-model="showPasswordModal" title="Modifier le mot de passe" is-form @confirm="savePassword"
       :loading="passwordLoading" submit-label="Modifier le mot de passe" submit-variant="danger"
       :disabled="!passwordForm.currentPassword || !passwordForm.newPassword || passwordForm.newPassword !== passwordForm.confirmPassword"
-      description="Pour votre sécurité, vous serez déconnecté après la modification." description-type="danger"
-      :form="passwordForm" :fields="[
+      description="Pour votre sécurité, vous serez déconnecté après la modification. Requis: 8+ car, 1 Maj, 1 min, 1 chiffre, 1 spécial."
+      description-type="danger" :form="passwordForm" :fields="[
         { name: 'currentPassword', label: 'Mot de passe actuel', type: 'password', required: true, icon: IconLock },
         { name: 'newPassword', label: 'Nouveau mot de passe', type: 'password', required: true, minlength: 8, icon: IconKey },
         { name: 'confirmPassword', label: 'Confirmer le mot de passe', type: 'password', required: true, icon: IconKey, error: (passwordForm.newPassword && passwordForm.confirmPassword && passwordForm.newPassword !== passwordForm.confirmPassword) ? 'Les mots de passe ne correspondent pas' : '' }
@@ -389,9 +391,9 @@ definePageMeta({
 useHead({
   title: 'Mon compte incubé',
   meta: [
-    { 
-      name: 'description', 
-      content: "Gérez vos informations personnelles et bancaires." 
+    {
+      name: 'description',
+      content: "Gérez vos informations personnelles et bancaires."
     }
   ]
 });
@@ -483,20 +485,20 @@ const equipe = computed(() => {
 
 const projet = computed(() => {
   if (!user.value) return null;
-  
+
   // Essayer de trouver l'ID du projet depuis l'utilisateur
   const projetId = typeof user.value.projet === 'object' ? user.value.projet?.id : (user.value.projetId || user.value.projet);
-  
+
   if (projetId) {
     return projectStore.projects.find(p => p.id == projetId) || (typeof user.value.projet === 'object' ? user.value.projet : null);
   }
-  
+
   // Repli : Si l'utilisateur a une équipe, trouver le projet associé
   if (equipe.value) {
-    return projectStore.projects.find(p => p.equipeId == equipe.value.id) || 
-           projectStore.projects.find(p => p.equipe && p.equipe.id == equipe.value.id);
+    return projectStore.projects.find(p => p.equipeId == equipe.value.id) ||
+      projectStore.projects.find(p => p.equipe && p.equipe.id == equipe.value.id);
   }
-  
+
   return null;
 });
 
@@ -563,19 +565,19 @@ const savePhoto = async () => {
 };
 
 const deletePhoto = async () => {
-    const { confirm } = useConfirm();
-    const confirmed = await confirm({
-        title: 'Supprimer la photo',
-        message: 'Voulez-vous vraiment supprimer votre photo de profil ?',
-        type: 'danger',
-        confirmLabel: 'Supprimer',
-        cancelLabel: 'Annuler'
-    });
+  const { confirm } = useConfirm();
+  const confirmed = await confirm({
+    title: 'Supprimer la photo',
+    message: 'Voulez-vous vraiment supprimer votre photo de profil ?',
+    type: 'danger',
+    confirmLabel: 'Supprimer',
+    cancelLabel: 'Annuler'
+  });
 
-    if (confirmed) {
-         photoForm.value.photoUrl = '';
-         await savePhoto();
-    }
+  if (confirmed) {
+    photoForm.value.photoUrl = '';
+    await savePhoto();
+  }
 };
 
 const saveProfile = async () => {
@@ -602,21 +604,21 @@ const saveBankInfo = async () => {
 
   try {
     const result = await authStore.updateBankInfo({
-       rib: bankForm.value.rib,
-       banque: bankForm.value.banqueId
+      rib: bankForm.value.rib,
+      banque: bankForm.value.banqueId
     });
 
     if (result.success) {
-       if (result.status === 'pending') {
-          editRequestPending.value = true;
-          toast.success("Demande de modification envoyée à l'administration.");
-       } else {
-          toast.success("Informations bancaires mises à jour.");
-       }
-       showBankModal.value = false;
+      if (result.status === 'pending') {
+        editRequestPending.value = true;
+        toast.success("Demande de modification envoyée à l'administration.");
+      } else {
+        toast.success("Informations bancaires mises à jour.");
+      }
+      showBankModal.value = false;
     } else {
-       bankError.value = result.message;
-       toast.error(result.message);
+      bankError.value = result.message;
+      toast.error(result.message);
     }
   } catch (error: any) {
     bankError.value = 'Erreur lors de l\'enregistrement';
@@ -627,47 +629,47 @@ const saveBankInfo = async () => {
 
 const requestBankInfoEdit = async () => {
   if (user.value) {
-     bankForm.value = {
-        banqueId: banque.value?.id || '',
-        rib: user.value.rib || ''
-     };
-     showBankModal.value = true;
+    bankForm.value = {
+      banqueId: banque.value?.id || '',
+      rib: user.value.rib || ''
+    };
+    showBankModal.value = true;
   }
 };
 
 // Actions - Équipe
 const openTeamModal = () => {
   if (user.value) {
-     teamForm.value = {
-        equipeId: equipe.value?.id || ''
-     };
-     showTeamModal.value = true;
+    teamForm.value = {
+      equipeId: equipe.value?.id || ''
+    };
+    showTeamModal.value = true;
   }
 };
 
 const saveTeam = async () => {
-   teamLoading.value = true;
-   teamError.value = '';
+  teamLoading.value = true;
+  teamError.value = '';
 
-   try {
-      const result = await authStore.updateTeam(teamForm.value.equipeId);
-      
-      if (result.success) {
-         if (result.status === 'pending') {
-            teamRequestPending.value = true;
-            toast.success("Demande de changement d'équipe envoyée.");
-         } else {
-            toast.success("Équipe mise à jour avec succès.");
-         }
-         showTeamModal.value = false;
+  try {
+    const result = await authStore.updateTeam(teamForm.value.equipeId);
+
+    if (result.success) {
+      if (result.status === 'pending') {
+        teamRequestPending.value = true;
+        toast.success("Demande de changement d'équipe envoyée.");
       } else {
-         toast.error(result.message);
+        toast.success("Équipe mise à jour avec succès.");
       }
-   } catch(e) {
-      toast.error("Erreur lors de la mise à jour de l'équipe");
-   } finally {
-      teamLoading.value = false;
-   }
+      showTeamModal.value = false;
+    } else {
+      toast.error(result.message);
+    }
+  } catch (e) {
+    toast.error("Erreur lors de la mise à jour de l'équipe");
+  } finally {
+    teamLoading.value = false;
+  }
 };
 
 // Actions - Mot de passe

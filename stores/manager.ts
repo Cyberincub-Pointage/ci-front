@@ -70,7 +70,16 @@ export const useManagerStore = defineStore('manager', () => {
       users.value.push(newFormateur);
       return { success: true, message: 'Formateur créé avec succès' };
     } catch (e: any) {
-      return { success: false, message: e.data?.message || 'Erreur création formateur' };
+      let message = 'Erreur création formateur';
+
+      if (e.statusCode === 409) {
+        message = "L'adresse email fournie est déjà utilisée.";
+      } else if (e.data) {
+        if (typeof e.data === 'string') message = e.data;
+        else if (e.data.message) message = e.data.message;
+        else if (e.data.emailAlreadyInUse) message = "L'adresse email fournie est déjà utilisée.";
+      }
+      return { success: false, message };
     } finally {
       loading.value = false;
     }

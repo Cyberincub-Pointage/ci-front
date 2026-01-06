@@ -456,33 +456,78 @@ export const useAuthStore = defineStore('auth', () => {
   };
 
   // Réinitialiser le mot de passe
-  const resetPassword = async (token: string, password: string): Promise<{ success: boolean; message: string }> => {
+  const resetPassword = async (token: string, password: string, role: string = 'incube'): Promise<{ success: boolean; message: string }> => {
     const api = useAPI();
-    try {
-      await api('/incube/auth/reset-password', {
-        method: 'POST',
-        body: { token, password }
-      });
-      return { success: true, message: 'Mot de passe réinitialisé avec succès' };
-    } catch (error: any) {
-      let message = 'Lien invalide ou expiré';
+    const roles: string[] = ['incube', 'admin', 'formateur'];
 
-      if (error.data) {
-        if (error.data?.message) {
-          message = error.data.message;
-        } else if (typeof error.data === 'string') {
-          if (error.data === 'invalidToken') {
+    // Si un rôle est fourni et valide, on le met en premier
+    const sortedRoles = roles.sort((a, b) => {
+      if (a === role) return -1;
+      if (b === role) return 1;
+      return 0;
+    });
+
+    let lastError = null;
+
+    for (const currentRole of sortedRoles) {
+      try {
+        let endpoint = '';
+        switch (currentRole) {
+          case 'admin':
+            endpoint = '/admin/auth/reset-password';
+            break;
+          case 'formateur':
+            endpoint = '/formateur/auth/reset-password';
+            break;
+          case 'incube':
+          default:
+            endpoint = '/incube/auth/reset-password';
+            break;
+        }
+
+        await api(endpoint, {
+          method: 'POST',
+          body: { token, password }
+        });
+
+        // Si ça réussit, on retourne succès
+        return { success: true, message: 'Mot de passe réinitialisé avec succès' };
+
+      } catch (error: any) {
+        lastError = error;
+
+        const isInvalidToken =
+          (typeof error.data === 'string' && error.data === 'invalidToken') ||
+          (error.data?.invalidToken) ||
+          (error.message && error.message.includes('Token invalide')) ||
+          (error.data?.message && error.data.message.includes('Token invalide'));
+
+        if (isInvalidToken) {
+          continue;
+        }
+
+        break;
+      }
+    }
+
+    let message = 'Lien invalide ou expiré';
+    if (lastError) {
+      if (lastError.data) {
+        if (lastError.data?.message) {
+          message = lastError.data.message;
+        } else if (typeof lastError.data === 'string') {
+          if (lastError.data === 'invalidToken') {
             message = 'Le lien de réinitialisation est invalide ou a expiré.';
-          } else if (error.data === 'passwordFormatInvalid' || error.data.includes('mot de passe')) {
-            message = error.data.includes('mot de passe') ? error.data : 'Le mot de passe ne respecte pas les critères de sécurité.';
+          } else if (lastError.data === 'passwordFormatInvalid' || lastError.data.includes('mot de passe')) {
+            message = lastError.data.includes('mot de passe') ? lastError.data : 'Le mot de passe ne respecte pas les critères de sécurité.';
           } else {
-            message = error.data;
+            message = lastError.data;
           }
         }
       }
-
-      return { success: false, message };
     }
+
+    return { success: false, message };
   };
 
   return {

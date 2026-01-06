@@ -28,8 +28,7 @@
           <div class="relative z-10">
             <div
               class="w-32 h-32 mx-auto rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 p-1 mb-4 shadow-xl group relative">
-              <div v-if="user?.photoUrl"
-                class="w-full h-full rounded-full bg-white dark:bg-gray-800 overflow-hidden">
+              <div v-if="user?.photoUrl" class="w-full h-full rounded-full bg-white dark:bg-gray-800 overflow-hidden">
                 <img :src="user.photoUrl" class="w-full h-full object-cover" alt="Profile" />
               </div>
               <div v-else
@@ -37,18 +36,18 @@
                 <span class="text-4xl font-bold text-gray-400">{{ userInitials }}</span>
               </div>
 
-               <!-- Bouton icône appareil photo -->
-              <button @click="openPhotoModal" 
+              <!-- Bouton icône appareil photo -->
+              <button @click="openPhotoModal"
                 class="absolute bottom-0 right-0 p-2 bg-white dark:bg-gray-800 rounded-full shadow-lg border border-gray-100 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0"
                 title="Modifier la photo">
-                 <IconCamera class="w-4 h-4" />
+                <IconCamera class="w-4 h-4" />
               </button>
 
               <!-- Bouton icône suppression -->
-              <button v-if="user?.photoUrl" @click="deletePhoto" 
+              <button v-if="user?.photoUrl" @click="deletePhoto"
                 class="absolute bottom-0 left-0 p-2 bg-white dark:bg-gray-800 rounded-full shadow-lg border border-gray-100 dark:border-gray-700 text-red-500 hover:text-red-700 transition-all opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0"
                 title="Supprimer la photo">
-                 <IconTrash class="w-4 h-4" />
+                <IconTrash class="w-4 h-4" />
               </button>
             </div>
 
@@ -142,7 +141,7 @@
                 </div>
               </div>
 
-               <!-- Téléphone -->
+              <!-- Téléphone -->
               <div class="space-y-1.5">
                 <label
                   class="text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wide">Téléphone</label>
@@ -158,7 +157,8 @@
                 <div class="flex justify-between items-center mb-1">
                   <label class="text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wide">Adresse
                     Email</label>
-                  <button @click="openEmailModal" class="text-xs text-blue-600 hover:underline font-medium">Modifier l'email</button>
+                  <button @click="openEmailModal" class="text-xs text-blue-600 hover:underline font-medium">Modifier
+                    l'email</button>
                 </div>
 
                 <div
@@ -225,17 +225,15 @@
 
     <!-- Modal modification informations générales -->
     <AppModal v-model="showProfileModal" title="Modifier mes informations" is-form @confirm="saveProfile"
-      :loading="isSubmitting" submit-label="Enregistrer les modifications" :form="profileForm" :grid-cols="2"
-      :fields="[
+      :loading="isSubmitting" submit-label="Enregistrer les modifications" :form="profileForm" :grid-cols="2" :fields="[
         { name: 'prenom', label: 'Prénom', type: 'text', required: true },
         { name: 'nom', label: 'Nom', type: 'text', required: true },
         { name: 'telephone', label: 'Téléphone', type: 'tel', placeholder: '+229...', fullWidth: true }
       ]" />
 
     <!-- Modal Photo -->
-    <AppModal v-model="showPhotoModal" title="Modifier ma photo" is-form @confirm="savePhoto"
-      :loading="isSubmitting" submit-label="Enregistrer" submit-variant="primary"
-      :form="photoForm" :fields="[
+    <AppModal v-model="showPhotoModal" title="Modifier ma photo" is-form @confirm="savePhoto" :loading="isSubmitting"
+      submit-label="Enregistrer" submit-variant="primary" :form="photoForm" :fields="[
         { name: 'photoUrl', label: 'URL de la photo', type: 'url', required: false, placeholder: 'https://...', fullWidth: true, icon: IconCamera }
       ]" />
 
@@ -251,8 +249,8 @@
     <AppModal v-model="showPasswordModal" title="Modifier le mot de passe" is-form @confirm="updatePassword"
       :loading="isSubmitting" submit-label="Définir le mot de passe" submit-variant="success"
       :disabled="passwordForm.newPassword !== passwordForm.confirmPassword"
-      description="Pour votre sécurité, vous serez déconnecté après la modification." description-type="info"
-      :form="passwordForm" :fields="[
+      description="Pour votre sécurité, vous serez déconnecté après la modification. Requis: 12+ car, 2 Maj, 2 min, 2 chiffres, 2 spéciaux."
+      description-type="info" :form="passwordForm" :fields="[
         { name: 'currentPassword', label: 'Mot de passe actuel', type: 'password', required: true, icon: IconPassword },
         { name: 'newPassword', label: 'Nouveau mot de passe', type: 'password', required: true, minlength: 8, icon: IconKey },
         { name: 'confirmPassword', label: 'Confirmer nouveau mot de passe', type: 'password', required: true, icon: IconKey, error: (passwordForm.newPassword && passwordForm.confirmPassword && passwordForm.newPassword !== passwordForm.confirmPassword) ? 'Les mots de passe ne correspondent pas' : '' }
@@ -266,7 +264,7 @@ import { useAuthStore } from '~/stores/auth';
 import { useToast } from '~/composables/useToast';
 import { useAPI } from '~/composables/useAPI';
 import {
-  IconEdit, IconShieldCheck, IconKey, IconLock, IconPassword, IconDeviceMobile, 
+  IconEdit, IconShieldCheck, IconKey, IconLock, IconPassword, IconDeviceMobile,
   IconMail, IconUserShield, IconCheck, IconId, IconCamera, IconTrash, IconPhone
 } from '@tabler/icons-vue';
 
@@ -279,9 +277,9 @@ definePageMeta({
 useHead({
   title: 'Mon compte administrateur',
   meta: [
-    { 
-      name: 'description', 
-      content: "Gérez vos informations personnelles, votre mot de passe et vos préférences de sécurité." 
+    {
+      name: 'description',
+      content: "Gérez vos informations personnelles, votre mot de passe et vos préférences de sécurité."
     }
   ]
 });
@@ -327,22 +325,22 @@ const openProfileModal = () => {
 };
 
 const openPhotoModal = () => {
-    if (!user.value) return;
-    photoForm.value = {
-        photoUrl: user.value.photoUrl || ''
-    };
-    showPhotoModal.value = true;
+  if (!user.value) return;
+  photoForm.value = {
+    photoUrl: user.value.photoUrl || ''
+  };
+  showPhotoModal.value = true;
 };
 
 const saveProfile = async () => {
   isSubmitting.value = true;
   try {
     const result = await authStore.updateProfile(profileForm.value);
-     if (result.success) {
+    if (result.success) {
       toast.success('Profil mis à jour avec succès');
       showProfileModal.value = false;
     } else {
-       toast.error(result.message);
+      toast.error(result.message);
     }
   } catch (error: any) {
     toast.error('Erreur lors de la mise à jour du profil');
@@ -352,36 +350,36 @@ const saveProfile = async () => {
 };
 
 const savePhoto = async () => {
-    isSubmitting.value = true;
-    try {
-        const result = await authStore.updateProfile({ photoUrl: photoForm.value.photoUrl });
-        if (result.success) {
-            toast.success('Photo de profil mise à jour');
-            showPhotoModal.value = false;
-        } else {
-            toast.error(result.message);
-        }
-    } catch (e) {
-        toast.error('Erreur lors de la mise à jour de la photo');
-    } finally {
-        isSubmitting.value = false;
+  isSubmitting.value = true;
+  try {
+    const result = await authStore.updateProfile({ photoUrl: photoForm.value.photoUrl });
+    if (result.success) {
+      toast.success('Photo de profil mise à jour');
+      showPhotoModal.value = false;
+    } else {
+      toast.error(result.message);
     }
+  } catch (e) {
+    toast.error('Erreur lors de la mise à jour de la photo');
+  } finally {
+    isSubmitting.value = false;
+  }
 };
 
 const deletePhoto = async () => {
-    const { confirm } = useConfirm();
-    const confirmed = await confirm({
-        title: 'Supprimer la photo',
-        message: 'Voulez-vous vraiment supprimer votre photo de profil ?',
-        type: 'danger',
-        confirmLabel: 'Supprimer',
-        cancelLabel: 'Annuler'
-    });
+  const { confirm } = useConfirm();
+  const confirmed = await confirm({
+    title: 'Supprimer la photo',
+    message: 'Voulez-vous vraiment supprimer votre photo de profil ?',
+    type: 'danger',
+    confirmLabel: 'Supprimer',
+    cancelLabel: 'Annuler'
+  });
 
-    if (confirmed) {
-         photoForm.value.photoUrl = '';
-         await savePhoto();
-    }
+  if (confirmed) {
+    photoForm.value.photoUrl = '';
+    await savePhoto();
+  }
 };
 
 // Modification de l'email
@@ -421,12 +419,12 @@ const updatePassword = async () => {
   try {
     const result = await authStore.updatePassword(passwordForm.value.currentPassword, passwordForm.value.newPassword);
     if (result.success) {
-        toast.success('Mot de passe mis à jour. Veuillez vous reconnecter.');
-        showPasswordModal.value = false;
-        await authStore.logout();
-        navigateTo('/auth/login');
+      toast.success('Mot de passe mis à jour. Veuillez vous reconnecter.');
+      showPasswordModal.value = false;
+      await authStore.logout();
+      navigateTo('/auth/login');
     } else {
-        toast.error(result.message);
+      toast.error(result.message);
     }
   } catch (error: any) {
     toast.error('Erreur lors de la mise à jour du mot de passe');

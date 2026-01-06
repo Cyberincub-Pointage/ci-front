@@ -6,14 +6,14 @@
     </template>
     <template #quote>
       <blockquote class="text-2xl font-medium text-white mb-6">
-        "Sécurisez votre accès et reprenez le contrôle de votre compte."
+        "Sécurisez votre compte formateur."
       </blockquote>
     </template>
 
     <div class="w-full max-w-md">
       <div class="text-center mb-8">
-        <h1 class="text-3xl font-bold">Réinitialisation</h1>
-        <p class="text-[var(--color-text-secondary)] mt-2">Créez votre nouveau mot de passe</p>
+        <h1 class="text-3xl font-bold">Réinitialisation Formateur</h1>
+        <p class="text-[var(--color-text-secondary)] mt-2">Créez votre nouveau mot de passe formateur</p>
       </div>
 
       <div class="card">
@@ -61,6 +61,16 @@
             </div>
           </div>
 
+          <div
+            class="p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg flex items-start gap-2">
+            <IconAlertCircle class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+            <p class="text-xs text-blue-600 dark:text-blue-400 leading-relaxed">
+              Le mot de passe doit contenir au moins 10 caractères, avec 2 majuscules, 2 minuscules, 2 chiffres et 2
+              caractères spéciaux.
+            </p>
+          </div>
+
+
           <div>
             <label class="label">Confirmer le mot de passe</label>
             <input v-model="confirmPassword" :type="showPassword ? 'text' : 'password'" required class="input"
@@ -86,7 +96,7 @@
 
 <script setup lang="ts">
 import { useAuthStore } from '~/stores/auth';
-import { IconLock, IconLoader, IconCheck, IconX, IconEye, IconEyeOff, IconLockAccessOff } from '@tabler/icons-vue';
+import { IconLock, IconLoader, IconCheck, IconX, IconEye, IconEyeOff, IconAlertCircle } from '@tabler/icons-vue';
 
 // Désactive le layout par défaut
 definePageMeta({
@@ -99,11 +109,11 @@ const router = useRouter();
 
 // SEO
 useHead({
-  title: 'Réinitialisation du mot de passe',
+  title: 'Réinitialisation Formateur',
   meta: [
-    { 
-      name: 'description', 
-      content: "Réinitialisez votre mot de passe oublié. Sécurisez votre accès et reprenez le contrôle de votre compte CyberIncub." 
+    {
+      name: 'description',
+      content: "Réinitialisez votre mot de passe formateur CyberIncub."
     }
   ]
 });
@@ -118,6 +128,7 @@ const showPassword = ref(false);
 const tokenError = ref(false);
 
 const token = ref('');
+const role = 'formateur'; // Role fixé
 
 // Vérifie que les deux mots de passe correspondent
 const passwordMismatch = computed(() => {
@@ -127,6 +138,7 @@ const passwordMismatch = computed(() => {
 // Vérifie si un token est présent dans l'URL à l'ouverture de la page
 onMounted(() => {
   const queryToken = route.query.token as string;
+
   if (!queryToken) {
     tokenError.value = true;
   } else {
@@ -145,7 +157,7 @@ const handleReset = async () => {
   errorMessage.value = '';
 
   try {
-    const result = await authStore.resetPassword(token.value, password.value);
+    const result = await authStore.resetPassword(token.value, password.value, role);
 
     if (result.success) {
       success.value = true;

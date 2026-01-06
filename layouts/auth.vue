@@ -37,18 +37,29 @@
       <div class="w-full max-w-md mx-auto">
         <!-- Contenu de base -->
         <div class="mb-10 lg:hidden text-center">
-          <img src="/img/logo-c.png" alt="CyberIncub" class="h-12 w-auto mx-auto" />
+          <img :src="isDark ? '/img/logo-b.png' : '/img/logo-c.png'" alt="CyberIncub" class="h-12 w-auto mx-auto" />
         </div>
         <slot />
       </div>
+    </div>
+    <!-- Toggle Thème Absolu -->
+    <div class="absolute top-4 right-4 z-50">
+      <button @click="toggleTheme" class="btn-ghost p-2 rounded-lg bg-white/50 dark:bg-black/50 backdrop-blur-sm"
+        aria-label="Toggle theme">
+        <IconSun v-if="isDark" class="w-5 h-5 text-yellow-500" />
+        <IconMoon v-else class="w-5 h-5 text-slate-700" />
+      </button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useAuthStore } from '~/stores/auth';
+import { useTheme } from '~/composables/useTheme';
+import { IconSun, IconMoon } from '@tabler/icons-vue';
 
 const authStore = useAuthStore();
+const { isDark, toggleTheme } = useTheme();
 
 onMounted(() => {
   authStore.loadUser();

@@ -59,6 +59,7 @@
               <p v-if="passwordMismatch" class="text-red-500 text-xs mt-1">Les mots de passe ne correspondent pas.</p>
             </div>
           </div>
+          <p class="text-xs text-center text-gray-500 mt-1">8 car. min, 1 maj, 1 min, 1 chiffre, 1 car. spécial</p>
 
           <div v-if="errorMessage"
             class="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
@@ -108,9 +109,9 @@ const router = useRouter();
 useHead({
   title: 'Inscription',
   meta: [
-    { 
-      name: 'description', 
-      content: "Créez votre compte incubé sur CyberIncub." 
+    {
+      name: 'description',
+      content: "Créez votre compte incubé sur CyberIncub."
     }
   ]
 });

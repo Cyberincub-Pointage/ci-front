@@ -28,8 +28,7 @@
           <div class="relative z-10 transition-all duration-300">
             <div
               class="w-28 h-28 mx-auto rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 p-1 mb-4 shadow-xl relative group">
-              <div v-if="user?.photoUrl"
-                class="w-full h-full rounded-full bg-white dark:bg-gray-800 overflow-hidden">
+              <div v-if="user?.photoUrl" class="w-full h-full rounded-full bg-white dark:bg-gray-800 overflow-hidden">
                 <img :src="user.photoUrl" class="w-full h-full object-cover" alt="Profile" />
               </div>
               <div v-else
@@ -39,19 +38,19 @@
                   {{ userInitials }}
                 </span>
               </div>
-              
+
               <!-- Bouton pour changer la photo -->
-              <button @click="openPhotoModal" 
+              <button @click="openPhotoModal"
                 class="absolute bottom-0 right-0 p-2 bg-white dark:bg-gray-800 rounded-full shadow-lg border border-gray-100 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0"
                 title="Modifier la photo">
-                 <IconCamera class="w-4 h-4" />
+                <IconCamera class="w-4 h-4" />
               </button>
 
               <!-- Bouton de suppression de photo -->
-              <button v-if="user?.photoUrl" @click="deletePhoto" 
+              <button v-if="user?.photoUrl" @click="deletePhoto"
                 class="absolute bottom-0 left-0 p-2 bg-white dark:bg-gray-800 rounded-full shadow-lg border border-gray-100 dark:border-gray-700 text-red-500 hover:text-red-700 transition-all opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0"
                 title="Supprimer la photo">
-                 <IconTrash class="w-4 h-4" />
+                <IconTrash class="w-4 h-4" />
               </button>
             </div>
 
@@ -76,7 +75,8 @@
               <div class="text-center p-2 rounded-lg bg-blue-50 dark:bg-blue-900/10">
                 <p class="text-xs text-blue-800 dark:text-blue-300 uppercase tracking-wider mb-1 font-semibold">
                   Statut</p>
-                <p class="text-xl font-bold text-blue-600 dark:text-blue-400 capitalize">{{ user?.status || 'Active' }}</p>
+                <p class="text-xl font-bold text-blue-600 dark:text-blue-400 capitalize">{{ user?.status || 'Active' }}
+                </p>
               </div>
             </div>
           </div>
@@ -213,9 +213,8 @@
       ]" />
 
     <!-- Modal photo -->
-    <AppModal v-model="showPhotoModal" title="Modifier ma photo" is-form @confirm="savePhoto"
-      :loading="isSubmitting" submit-label="Enregistrer" submit-variant="primary"
-      :form="photoForm" :fields="[
+    <AppModal v-model="showPhotoModal" title="Modifier ma photo" is-form @confirm="savePhoto" :loading="isSubmitting"
+      submit-label="Enregistrer" submit-variant="primary" :form="photoForm" :fields="[
         { name: 'photoUrl', label: 'URL de la photo', type: 'url', required: false, placeholder: 'https://...', fullWidth: true, icon: IconCamera }
       ]" />
 
@@ -223,8 +222,8 @@
     <AppModal v-model="showPasswordModal" title="Modifier le mot de passe" is-form @confirm="savePassword"
       :loading="passwordLoading" submit-label="Modifier le mot de passe" submit-variant="danger"
       :disabled="!passwordForm.currentPassword || !passwordForm.newPassword || passwordForm.newPassword !== passwordForm.confirmPassword"
-      description="Pour votre sécurité, vous serez déconnecté après la modification." description-type="danger"
-      :form="passwordForm" :fields="[
+      description="Pour votre sécurité, vous serez déconnecté après la modification. Requis: 10+ car, 2 Maj, 2 min, 2 chiffres, 2 spéciaux."
+      description-type="danger" :form="passwordForm" :fields="[
         { name: 'currentPassword', label: 'Mot de passe actuel', type: 'password', required: true, icon: IconLock },
         { name: 'newPassword', label: 'Nouveau mot de passe', type: 'password', required: true, minlength: 8, icon: IconKey },
         { name: 'confirmPassword', label: 'Confirmer le mot de passe', type: 'password', required: true, icon: IconKey, error: (passwordForm.newPassword && passwordForm.confirmPassword && passwordForm.newPassword !== passwordForm.confirmPassword) ? 'Les mots de passe ne correspondent pas' : '' }
@@ -247,9 +246,9 @@ definePageMeta({
 useHead({
   title: 'Mon compte formateur',
   meta: [
-    { 
-      name: 'description', 
-      content: "Gérez vos informations personnelles et votre sécurité." 
+    {
+      name: 'description',
+      content: "Gérez vos informations personnelles et votre sécurité."
     }
   ]
 });
@@ -330,7 +329,7 @@ const saveProfile = async () => {
       toast.success('Profil mis à jour avec succès');
       showProfileModal.value = false;
     } else {
-       toast.error(result.message);
+      toast.error(result.message);
     }
   } catch (error: any) {
     toast.error('Erreur lors de la mise à jour');
@@ -359,19 +358,19 @@ const savePhoto = async () => {
 
 // Supprime la photo de profil après confirmation
 const deletePhoto = async () => {
-    const { confirm } = useConfirm();
-    const confirmed = await confirm({
-        title: 'Supprimer la photo',
-        message: 'Voulez-vous vraiment supprimer votre photo de profil ?',
-        type: 'danger',
-        confirmLabel: 'Supprimer',
-        cancelLabel: 'Annuler'
-    });
+  const { confirm } = useConfirm();
+  const confirmed = await confirm({
+    title: 'Supprimer la photo',
+    message: 'Voulez-vous vraiment supprimer votre photo de profil ?',
+    type: 'danger',
+    confirmLabel: 'Supprimer',
+    cancelLabel: 'Annuler'
+  });
 
-    if (confirmed) {
-         photoForm.value.photoUrl = '';
-         await savePhoto();
-    }
+  if (confirmed) {
+    photoForm.value.photoUrl = '';
+    await savePhoto();
+  }
 };
 
 // Change le mot de passe
@@ -387,7 +386,7 @@ const savePassword = async () => {
       await authStore.logout();
       navigateTo('/auth/login');
     } else {
-       toast.error(result.message);
+      toast.error(result.message);
     }
   } catch (error: any) {
     toast.error('Erreur lors de la modification');
