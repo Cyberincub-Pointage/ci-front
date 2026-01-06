@@ -102,6 +102,7 @@
 
 <script setup lang="ts">
 import { useAuthStore } from '~/stores/auth';
+import { useToast } from '~/composables/useToast';
 import { IconUserPlus, IconLoader, IconEye, IconEyeOff, IconHelp } from '@tabler/icons-vue';
 import { useUserJourney } from '~/composables/useUserJourney';
 
@@ -158,6 +159,8 @@ const handleRegister = async () => {
     const result = await authStore.register(registerData);
 
     if (result.success) {
+      const { success } = useToast();
+      success(result.message);
       await router.push('/auth/login');
     } else {
       errorMessage.value = result.message;

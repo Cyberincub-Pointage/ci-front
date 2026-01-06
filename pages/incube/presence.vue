@@ -25,10 +25,17 @@
             {{ isChecking ? 'Vérification...' : isInZone ? 'Vous êtes dans la zone' : 'Hors zone autorisée' }}
           </h2>
 
-          <p class="text-[var(--color-text-secondary)]">
-            {{ isChecking ? 'Détection de votre position...' : isInZone ? 'Vous pouvez marquer votre présence' :
-              'Veuillez vous rendre sur le site pour pointer' }}
-          </p>
+          {{ isChecking ? 'Détection de votre position...' : isInZone ?
+            'Vous pouvez marquer votre présence' : 'Veuillez vous rendre sur le site pour pointer' }}
+
+          <div v-if="!isInZone && !isChecking && distanceToZone > 0"
+            class="mt-4 p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg text-sm inline-block text-left border border-gray-100 dark:border-gray-700">
+            <p class="mb-1"><span class="font-semibold">Distance :</span> {{ distanceToZone }}m <span
+                class="text-xs text-gray-500">(Autorisé: {{ zoneRadius }}m)</span></p>
+            <p><span class="font-semibold">Votre position :
+
+              </span> {{ coordinates.latitude.toFixed(6) }}, {{ coordinates.longitude.toFixed(6) }}</p>
+          </div>
         </div>
 
         <!-- Bouton de vérification -->
@@ -55,8 +62,7 @@
         </div>
 
         <!-- Bouton pour marquer la présence -->
-        <button @click="handleMarkPresence" :disabled="isSubmitting || !!todayPresence"
-          class="w-full btn btn-primary">
+        <button @click="handleMarkPresence" :disabled="isSubmitting || !!todayPresence" class="w-full btn btn-primary">
           <IconLoader v-if="isSubmitting" class="w-5 h-5 animate-spin mr-2" />
           <IconClipboardCheck v-else class=" w-5 h-5 mr-2" />
           <span v-if="todayPresence">Présence déjà marquée aujourd'hui</span>
@@ -147,9 +153,9 @@ definePageMeta({
 useHead({
   title: 'Marquer ma présence',
   meta: [
-    { 
-      name: 'description', 
-      content: "Pointage géolocalisé pour les incubés." 
+    {
+      name: 'description',
+      content: "Pointage géolocalisé pour les incubés."
     }
   ]
 });
@@ -158,11 +164,13 @@ const authStore = useAuthStore();
 const presenceStore = usePresenceStore();
 
 // Déstructuration de l'état réactif du store
-const { 
-  isInAllowedZone: isInZone, 
-  isCheckingZone: isChecking, 
-  geoCoordinates: coordinates, 
-  geoError
+const {
+  isInAllowedZone: isInZone,
+  isCheckingZone: isChecking,
+  geoCoordinates: coordinates,
+  geoError,
+  distanceToZone,
+  zoneRadius
 } = storeToRefs(presenceStore);
 
 const user = computed(() => authStore.currentUser);

@@ -179,13 +179,15 @@ export const useAuthStore = defineStore('auth', () => {
         body: data
       });
 
-      return { success: true, message: 'Inscription réussie' };
+      return { success: true, message: 'Inscription réussie. Veuillez vérifier votre email pour activer votre compte.' };
     } catch (error: any) {
       console.error('Register error:', error);
 
       let message = 'Erreur lors de l\'inscription.';
 
-      if (error.data) {
+      if (error.statusCode === 409) {
+        message = 'L\'adresse email est déjà utilisée.';
+      } else if (error.data) {
         if (error.data?.message) {
           message = error.data.message;
         } else if (typeof error.data === 'string') {
@@ -214,8 +216,6 @@ export const useAuthStore = defineStore('auth', () => {
         error.message?.toLowerCase().includes('load failed')
       )) {
         message = 'Impossible de contacter le serveur. Vérifiez votre connexion internet.';
-      } else if (error.statusCode === 409) {
-        message = 'L\'adresse email est déjà utilisée.';
       } else if (error.statusCode === 400) {
         // Si on a un fallback générique
         if (message === 'Erreur lors de l\'inscription.') {

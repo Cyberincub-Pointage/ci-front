@@ -128,6 +128,8 @@ export const usePresenceStore = defineStore('presence', () => {
   const geoCoordinates = ref({ latitude: 0, longitude: 0 });
   const isCheckingZone = ref(false);
   const geoError = ref<string | null>(null);
+  const distanceToZone = ref(0);
+  const zoneRadius = ref(0);
 
   // Vérifier la géolocalisation
   const checkGeolocation = async (): Promise<boolean> => {
@@ -161,6 +163,8 @@ export const usePresenceStore = defineStore('presence', () => {
             });
 
             isInAllowedZone.value = response.isInZone;
+            distanceToZone.value = response.distance;
+            zoneRadius.value = response.allowedRadius;
             // console.log(`Backend Distance Check: InZone=${response.isInZone}, Distance=${response.distance}m`);
           } catch (e: any) {
             console.error("Check zone API error:", e);
@@ -340,6 +344,8 @@ export const usePresenceStore = defineStore('presence', () => {
     geoCoordinates: readonly(geoCoordinates),
     isCheckingZone: readonly(isCheckingZone),
     geoError: readonly(geoError),
+    distanceToZone: readonly(distanceToZone),
+    zoneRadius: readonly(zoneRadius),
     fetchCurrentDailyAmount,
     fetchDailyAmountHistory,
     fetchPresences,
