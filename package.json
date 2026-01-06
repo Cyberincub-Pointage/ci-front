@@ -17,6 +17,7 @@
     "@tabler/icons-vue": "^3.35.0",
     "@vueuse/core": "^14.1.0",
     "@vueuse/nuxt": "^14.1.0",
+    "driver.js": "^1.4.0",
     "nuxt": "^3.20.1",
     "nuxt-gtag": "^4.1.0",
     "pinia": "^3.0.4",

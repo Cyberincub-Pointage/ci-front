@@ -1,5 +1,5 @@
 <template>
-  <aside
+  <aside id="app-sidebar"
     class="fixed left-0 top-16 h-[calc(100vh-4rem)] bg-[var(--color-bg-primary)] border-r transition-all duration-300 z-40 flex flex-col"
     :class="[
       isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
@@ -7,7 +7,7 @@
     ]">
 
     <!-- Bouton de bascule -->
-    <button @click="toggleCollapse"
+    <button id="sidebar-toggle" @click="toggleCollapse"
       class="absolute -right-3 top-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-full p-1 shadow-md text-gray-500 hover:text-primary-600 hidden lg:flex items-center justify-center z-50">
       <IconChevronLeft v-if="!isCollapsed" class="w-4 h-4" />
       <IconChevronRight v-else class="w-4 h-4" />
@@ -15,8 +15,9 @@
 
     <div class="flex flex-col h-full overflow-hidden">
       <!-- Navigation -->
-      <nav class="flex-1 p-3 space-y-1 overflow-y-auto overflow-x-hidden">
+      <nav id="sidebar-nav" class="flex-1 p-3 space-y-1 overflow-y-auto overflow-x-hidden">
         <NuxtLink v-for="item in menuItems" :key="item.to" :to="item.to" @click="closeSidebar"
+          :id="'menu-item-' + item.to.replace(/\//g, '-').substring(1)"
           class="flex items-center gap-3 px-3 py-3 rounded-lg transition-all group whitespace-nowrap relative" :class="[
             isActive(item.to)
               ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
@@ -34,16 +35,22 @@
 
       <!-- Pied de page -->
       <div class="p-4 border-t" v-if="!isCollapsed">
-        <div
+        <div id="sidebar-help-section"
           class="card p-3 bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-primary-900/10 dark:to-secondary-900/10 border-none">
-          <p class="text-xs font-bold text-[var(--color-text-primary)]">Besoin d'aide ?</p>
-          <a href="mailto:contact@cyberincub.bj" class="text-xs text-primary-600 hover:underline mt-1 block">
+          <div class="flex justify-between items-center mb-1">
+            <p class="text-xs font-bold text-[var(--color-text-primary)]">Besoin d'aide ?</p>
+            <button @click.prevent="startGuide" class="text-xs text-primary-600 hover:text-primary-800"
+              title="Lancer le guide">
+              <IconHelpCircle class="w-4 h-4" />
+            </button>
+          </div>
+          <a href="mailto:contact@cyberincub.bj" class="text-xs text-primary-600 hover:underline block">
             Support technique
           </a>
         </div>
       </div>
-      <div v-else class="p-4 border-t flex justify-center">
-        <button class="p-2 text-gray-400 hover:text-primary-500">
+      <div v-else id="sidebar-help-collapsed" class="p-4 border-t flex justify-center">
+        <button @click="startGuide" class="p-2 text-gray-400 hover:text-primary-500" title="Lancer le guide">
           <IconHelpCircle class="w-6 h-6" />
         </button>
       </div>
@@ -60,6 +67,7 @@ import {
   IconAlertTriangle, IconUsers, IconInfoCircle, IconUser, IconCash, IconCurrencyEuro, IconChevronLeft, IconChevronRight, IconHelpCircle, IconStack2
 } from '@tabler/icons-vue';
 import { useAuthStore } from '~/stores/auth';
+import { useUserJourney } from '~/composables/useUserJourney';
 import { ROLES, ROLE_GROUPS } from '~/utils/roles';
 
 interface MenuItem {
@@ -247,5 +255,11 @@ onMounted(() => {
 
 const closeSidebar = () => {
   emit('close');
+};
+
+const { startJourney } = useUserJourney();
+
+const startGuide = () => {
+  startJourney('sidebar');
 };
 </script>

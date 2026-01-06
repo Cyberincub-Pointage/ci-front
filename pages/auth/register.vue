@@ -10,6 +10,12 @@
       </blockquote>
     </template>
 
+    <button @click="startGuide"
+      class="fixed bottom-4 right-4 p-2 bg-primary-600 hover:bg-primary-700 rounded-full text-white shadow-lg transition-colors z-50"
+      title="Aide">
+      <IconHelp class="w-6 h-6" />
+    </button>
+
     <div class="w-full max-w-2xl">
       <div class="text-center mb-8">
         <h1 class="text-3xl font-bold">Inscription Incubé</h1>
@@ -21,30 +27,31 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="label">Prénom *</label>
-              <input v-model="form.prenom" type="text" required class="input" />
+              <input id="register-firstname" v-model="form.prenom" type="text" required class="input" />
             </div>
             <div>
               <label class="label">Nom *</label>
-              <input v-model="form.nom" type="text" required class="input" />
+              <input id="register-lastname" v-model="form.nom" type="text" required class="input" />
             </div>
           </div>
 
           <div>
             <label class="label">Email *</label>
-            <input v-model="form.email" type="email" required class="input" />
+            <input id="register-email" v-model="form.email" type="email" required class="input" />
           </div>
 
           <div>
             <label class="label">Téléphone *</label>
-            <input v-model="form.telephone" type="tel" required class="input" placeholder="+22901XXXXXXXX" />
+            <input id="register-phone" v-model="form.telephone" type="tel" required class="input"
+              placeholder="+22901XXXXXXXX" />
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="label">Mot de passe *</label>
               <div class="relative">
-                <input v-model="form.password" :type="showPassword ? 'text' : 'password'" required class="input pr-10"
-                  minlength="8" />
+                <input id="register-password" v-model="form.password" :type="showPassword ? 'text' : 'password'"
+                  required class="input pr-10" minlength="8" />
                 <button type="button" @click="showPassword = !showPassword"
                   class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
                   <IconEye v-if="!showPassword" class="w-5 h-5" />
@@ -73,7 +80,7 @@
             </p>
           </div>
 
-          <button type="submit" :disabled="loading" class="w-full btn btn-primary">
+          <button id="register-submit-btn" type="submit" :disabled="loading" class="w-full btn btn-primary">
             <IconLoader v-if="loading" class="w-5 h-5 animate-spin" />
             <IconUserPlus v-else class="w-5 h-5" />
             <span>{{ loading ? 'Inscription en cours...' : 'Créer mon compte' }}</span>
@@ -95,7 +102,8 @@
 
 <script setup lang="ts">
 import { useAuthStore } from '~/stores/auth';
-import { IconUserPlus, IconLoader, IconEye, IconEyeOff } from '@tabler/icons-vue';
+import { IconUserPlus, IconLoader, IconEye, IconEyeOff, IconHelp } from '@tabler/icons-vue';
+import { useUserJourney } from '~/composables/useUserJourney';
 
 // Désactive le layout par défaut
 definePageMeta({
@@ -159,5 +167,11 @@ const handleRegister = async () => {
   } finally {
     loading.value = false;
   }
+};
+
+const { startJourney } = useUserJourney();
+
+const startGuide = () => {
+  startJourney('register');
 };
 </script>

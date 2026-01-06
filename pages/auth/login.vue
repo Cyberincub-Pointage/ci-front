@@ -23,6 +23,12 @@
       </blockquote>
     </template>
 
+    <button @click="startGuide"
+      class="fixed bottom-4 right-4 p-2 bg-primary-600 hover:bg-primary-700 rounded-full text-white shadow-lg transition-colors z-50"
+      title="Aide">
+      <IconHelp class="w-6 h-6" />
+    </button>
+
     <div class="w-full max-w-md">
       <div class="text-center mb-8">
         <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Connexion</h1>
@@ -30,7 +36,7 @@
       </div>
 
       <!-- Sélecteur de rôle -->
-      <div class="flex p-1 mb-8 bg-gray-100 dark:bg-gray-800 rounded-xl">
+      <div id="role-selector" class="flex p-1 mb-8 bg-gray-100 dark:bg-gray-800 rounded-xl">
         <button v-for="role in roles" :key="role.value" @click="selectRole(role.value)"
           class="relative flex-1 py-2.5 text-sm font-medium rounded-lg transition-all duration-200" :class="[
             selectedRole === role.value
@@ -53,7 +59,8 @@
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <IconMail class="h-5 w-5 text-gray-400" />
             </div>
-            <input v-model="form.email" type="email" required class="input pl-10" :placeholder="emailPlaceholder" />
+            <input id="login-email" v-model="form.email" type="email" required class="input pl-10"
+              :placeholder="emailPlaceholder" />
           </div>
         </div>
 
@@ -63,8 +70,8 @@
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <IconLock class="h-5 w-5 text-gray-400" />
             </div>
-            <input v-model="form.password" :type="showPassword ? 'text' : 'password'" required class="input pl-10 pr-10"
-              placeholder="••••••••" />
+            <input id="login-password" v-model="form.password" :type="showPassword ? 'text' : 'password'" required
+              class="input pl-10 pr-10" placeholder="••••••••" />
             <button type="button" @click="showPassword = !showPassword"
               class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 focus:outline-none">
               <IconEye v-if="showPassword" class="w-5 h-5" />
@@ -72,7 +79,7 @@
             </button>
           </div>
           <div class="flex justify-end mt-2">
-            <button type="button" @click="showForgotModal = true"
+            <button id="forgot-password-btn" type="button" @click="showForgotModal = true"
               class="text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors">
               Mot de passe oublié ?
             </button>
@@ -86,7 +93,7 @@
           <p class="text-sm text-red-600 dark:text-red-400">{{ errorMessage }}</p>
         </div>
 
-        <button type="submit" :disabled="loading"
+        <button id="login-submit-btn" type="submit" :disabled="loading"
           class="w-full btn btn-primary py-3 text-base flex justify-center items-center gap-2 group">
           <span v-if="!loading">Se connecter</span>
           <span v-else>Connexion...</span>
@@ -98,7 +105,8 @@
       <div class="mt-8 text-center" v-if="selectedRole === 'incube'">
         <p class="text-sm text-[var(--color-text-secondary)]">
           Pas encore de compte ?
-          <NuxtLink to="/auth/register" class="text-primary-600 hover:text-primary-700 font-semibold hover:underline">
+          <NuxtLink id="register-link" to="/auth/register"
+            class="text-primary-600 hover:text-primary-700 font-semibold hover:underline">
             S'inscrire
           </NuxtLink>
         </p>
@@ -150,8 +158,9 @@
 
 <script setup lang="ts">
 import { useAuthStore } from '~/stores/auth';
+import { useUserJourney } from '~/composables/useUserJourney';
 
-import { IconLogin, IconLoader, IconEye, IconEyeOff, IconMail, IconLock, IconAlertCircle, IconKey } from '@tabler/icons-vue';
+import { IconLogin, IconLoader, IconEye, IconEyeOff, IconMail, IconLock, IconAlertCircle, IconKey, IconHelp } from '@tabler/icons-vue';
 import type { UserRole } from '~/types';
 
 // Layout désactivé pour la page de connexion
@@ -166,9 +175,9 @@ const router = useRouter();
 useHead({
   title: 'Connexion',
   meta: [
-    { 
-      name: 'description', 
-      content: 'Connectez-vous à votre espace sécurisé.' 
+    {
+      name: 'description',
+      content: 'Connectez-vous à votre espace sécurisé.'
     }
   ]
 });
@@ -267,6 +276,13 @@ const handleForgotPassword = async () => {
   } finally {
     forgotLoading.value = false;
   }
+  forgotLoading.value = false;
+}
+
+const { startJourney } = useUserJourney();
+
+const startGuide = () => {
+  startJourney('login', { role: selectedRole.value });
 };
 </script>
 
